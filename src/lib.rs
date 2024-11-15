@@ -1,3 +1,4 @@
+#[derive(Copy, Clone)]
 #[repr(C)]
 pub enum Month {
     Jan = 0x01,
@@ -12,6 +13,36 @@ pub enum Month {
     Oct = 0x0a,
     Nov = 0x0b,
     Dec = 0x0c,
+}
+
+static MONTH_NO_TO_MONTH: [Month; 16] = [
+    Month::Jan, // 0, invalid
+    Month::Jan,
+    Month::Feb,
+    Month::Mar,
+    Month::Apr,
+    Month::May,
+    Month::Jun,
+    Month::Jul,
+    Month::Aug,
+    Month::Sep,
+    Month::Oct,
+    Month::Nov,
+    Month::Dec,
+    Month::Jan, // 13, invalid
+    Month::Jan, // 14, invalid
+    Month::Jan, // 15, invalid
+];
+
+pub fn month_no_to_month(m: u8) -> Month {
+    let ix: u8 = m & 0x0f;
+    MONTH_NO_TO_MONTH[ix as usize]
+}
+
+impl From<u8> for Month {
+    fn from(u: u8) -> Self {
+        month_no_to_month(u)
+    }
 }
 
 #[repr(C)]
